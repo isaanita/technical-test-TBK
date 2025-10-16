@@ -12,4 +12,18 @@ class TrendingRepository {
 
     return results.map((e) => TrendingMoviesModel.fromJson(e)).toList();
   }
+
+  Future<List<TrendingMoviesModel>> fetchTrendingMoviesCategory() async {
+    final response = await apiService.fetchTrendingMoviesCategory();
+    final List results = response['results'];
+
+    return results.map((e) => TrendingMoviesModel.fromJson(e)).toList();
+  }
+
+  Future<List<TrendingMoviesModel>> fetchTrendingTVCategory() async {
+    final response = await apiService.fetchTrendingTVCategory();
+    final List results = response['results'];
+
+    return results.map((e) => TrendingMoviesModel.fromJson(e)).toList();
+  }
 }

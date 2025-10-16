@@ -12,13 +12,18 @@ part 'trending_movie_state.dart';
 class TrendingMovieBloc extends Bloc<TrendingMovieEvent, TrendingMovieState> {
   TrendingMovieBloc() : super(TrendingMovieInitial()) {
     on<TrendingMovieInitialFetchEvent>(trendingMovieInitialFetchEvent);
+    on<TrendingMovieCategoryInitialFetchEvent>(
+        trendingMovieCategoryInitialFetchEvent);
+    on<TrendingTVCategoryInitialFetchEvent>(
+        trendingTVCategoryInitialFetchEvent);
   }
 
   FutureOr<void> trendingMovieInitialFetchEvent(
     TrendingMovieInitialFetchEvent event,
     Emitter<TrendingMovieState> emit,
   ) async {
-    // tambahin instance ApiService di sini
+    emit(TrendingMovieFetchingLoadingState());
+
     final trendingRepository = TrendingRepository(ApiService());
 
     List<TrendingMoviesModel> trendingMoviesModels =
@@ -29,6 +34,42 @@ class TrendingMovieBloc extends Bloc<TrendingMovieEvent, TrendingMovieState> {
     } else {
       emit(TrendingMovieSuccessfulFetchState(
         trendingMoviesModels: trendingMoviesModels,
+      ));
+    }
+  }
+
+  FutureOr<void> trendingMovieCategoryInitialFetchEvent(
+      TrendingMovieCategoryInitialFetchEvent event,
+      Emitter<TrendingMovieState> emit) async {
+    emit(TrendingMovieFetchingLoadingState());
+    final trendingRepository = TrendingRepository(ApiService());
+
+    List<TrendingMoviesModel> trendingMoviesCategoryModels =
+        await trendingRepository.fetchTrendingMoviesCategory();
+
+    if (trendingMoviesCategoryModels.isEmpty) {
+      emit(TrendingMovieFetchingErrorState());
+    } else {
+      emit(TrendingMovieSuccessfulFetchState(
+        trendingMoviesModels: trendingMoviesCategoryModels,
+      ));
+    }
+  }
+
+  FutureOr<void> trendingTVCategoryInitialFetchEvent(
+      TrendingTVCategoryInitialFetchEvent event,
+      Emitter<TrendingMovieState> emit) async {
+    emit(TrendingMovieFetchingLoadingState());
+    final trendingRepository = TrendingRepository(ApiService());
+
+    List<TrendingMoviesModel> trendingTVCategoryModels =
+        await trendingRepository.fetchTrendingTVCategory();
+
+    if (trendingTVCategoryModels.isEmpty) {
+      emit(TrendingMovieFetchingErrorState());
+    } else {
+      emit(TrendingMovieSuccessfulFetchState(
+        trendingMoviesModels: trendingTVCategoryModels,
       ));
     }
   }

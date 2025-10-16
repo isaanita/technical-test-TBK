@@ -1,147 +1,238 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class TrendingMovie {
-  final String title;
-  final String description;
-  final String imageUrl;
-  final double rating;
-
-  TrendingMovie({
-    required this.title,
-    required this.description,
-    required this.imageUrl,
-    required this.rating,
-  });
-}
+enum TrendingMoviesVariant { defaultCard, compact }
 
 class TrendingMoviesCarouselWidget extends StatelessWidget {
-  final List<TrendingMovie> movies;
+  final String imageUrl;
+  final String title;
+  final String? description;
+  final String rating;
+  final String? releaseDate;
+  final TrendingMoviesVariant variant;
+  final VoidCallback? onSeeAllTap;
 
-  const TrendingMoviesCarouselWidget({super.key, required this.movies});
+  const TrendingMoviesCarouselWidget({
+    super.key,
+    required this.imageUrl,
+    required this.title,
+    this.description,
+    required this.rating,
+    this.releaseDate,
+    this.variant = TrendingMoviesVariant.defaultCard,
+    this.onSeeAllTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider.builder(
-      itemCount: movies.length,
-      itemBuilder: (context, index, realIndex) {
-        final movie = movies[index];
-        return _TrendingCard(movie: movie);
-      },
-      options: CarouselOptions(
-        height: 220,
-        enlargeCenterPage: true,
-        viewportFraction: 0.75,
-        enableInfiniteScroll: true,
-        autoPlay: true,
-      ),
-    );
+    if (variant == TrendingMoviesVariant.compact) {
+      return _buildCompactCard(context);
+    } else {
+      return _buildDefaultCard(context);
+    }
   }
-}
 
-class _TrendingCard extends StatelessWidget {
-  final TrendingMovie movie;
+  // 🔹 Tampilan compact (kayak The Shawshank Redemption)
+  Widget _buildCompactCard(BuildContext context) {
+    final formattedDate = (releaseDate != null && releaseDate!.isNotEmpty)
+        ? DateFormat('MMM dd, yyyy').format(DateTime.parse(releaseDate!))
+        : '';
 
-  const _TrendingCard({required this.movie});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 6),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12.withOpacity(0.05),
-            blurRadius: 6,
-            offset: const Offset(0, 3),
+    return GestureDetector(
+      onTap: onSeeAllTap,
+      child: Container(
+        width: 330,
+        margin: const EdgeInsets.only(right: 12),
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: const BorderSide(
+              color: Color.fromRGBO(229, 232, 235, 1),
+              width: 1,
+            ),
           ),
-        ],
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 🔹 Gambar + Badge Rating
-          Stack(
+          color: Colors.white,
+          elevation: 0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(16)),
                 child: Image.network(
-                  movie.imageUrl,
+                  imageUrl,
                   width: double.infinity,
-                  height: 130,
+                  height: 180,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    height: 180,
+                    color: Colors.grey[200],
+                    child: const Icon(Icons.broken_image_outlined, size: 40),
+                  ),
                 ),
               ),
-              Positioned(
-                right: 8,
-                top: 8,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFFD54F),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.star_rounded,
-                          color: Colors.white, size: 14),
-                      const SizedBox(width: 2),
-                      Text(
-                        "${movie.rating.toStringAsFixed(0)}%",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                        color: Colors.black,
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Text(
+                          formattedDate,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Color.fromRGBO(113, 116, 125, 1),
+                          ),
+                        ),
+                        const Spacer(),
+                        const Icon(
+                          Icons.star,
+                          size: 12,
+                          color: Color.fromRGBO(113, 63, 18, 1),
+                        ),
+                        const SizedBox(width: 2),
+                        Text(
+                          '$rating%',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: Color.fromRGBO(113, 63, 18, 1),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
 
-          // 🔹 Judul + Deskripsi
-          Expanded(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+  // 🔹 Tampilan default (punya kamu yang lama)
+  Widget _buildDefaultCard(BuildContext context) {
+    return GestureDetector(
+      onTap: onSeeAllTap,
+      child: Container(
+        margin: const EdgeInsets.only(right: 8),
+        width: 330,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: const BorderSide(
+              color: Color.fromRGBO(229, 232, 235, 1),
+              width: 1,
+            ),
+          ),
+          color: Colors.white,
+          elevation: 0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
                 children: [
-                  Text(
-                    movie.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                      color: Colors.black87,
+                  ClipRRect(
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(16)),
+                    child: Image.network(
+                      imageUrl,
+                      width: double.infinity,
+                      height: 180,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        height: 180,
+                        color: Colors.grey[200],
+                        child:
+                            const Icon(Icons.broken_image_outlined, size: 40),
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    movie.description,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.black54,
-                      height: 1.3,
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: const BorderSide(
+                          color: Color.fromRGBO(250, 204, 21, 1),
+                          width: 1,
+                        ),
+                      ),
+                      color: const Color.fromRGBO(250, 204, 21, 1),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.star_outlined,
+                              color: Color.fromRGBO(113, 63, 18, 1),
+                              size: 12,
+                            ),
+                            const SizedBox(width: 2),
+                            Text(
+                              "$rating%",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                                color: Color.fromRGBO(113, 63, 18, 1),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        letterSpacing: -1,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      description ?? '',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                        color: Color.fromRGBO(113, 116, 125, 1),
+                        height: 1.3,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

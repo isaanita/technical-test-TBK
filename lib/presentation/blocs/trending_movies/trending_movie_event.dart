@@ -7,11 +7,11 @@ sealed class TrendingMovieEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class TrendingMovieInitialFetchEvent extends TrendingMovieEvent {
-  final DateTime focusedDay;
+// trending movie all fetch event
+class TrendingMovieInitialFetchEvent extends TrendingMovieEvent {}
 
-  TrendingMovieInitialFetchEvent(this.focusedDay);
+// trending movie category fetch event
+class TrendingMovieCategoryInitialFetchEvent extends TrendingMovieEvent {}
 
-  @override
-  List<Object> get props => [focusedDay];
-}
+// trending tv fetch event
+class TrendingTVCategoryInitialFetchEvent extends TrendingMovieEvent {}
