@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:technical_test_isaanita/presentation/pages/movie_detail_page.dart';
+import 'package:technical_test_isaanita/presentation/pages/profile_page.dart';
 import 'package:technical_test_isaanita/presentation/pages/trending_page.dart';
 import 'package:technical_test_isaanita/presentation/pages/watchlist_page.dart';
 import '../pages/splash_page.dart';
@@ -11,6 +12,7 @@ class AppRoutes {
   static const String login = '/login';
   static const String home = '/home';
   static const String watchlist = '/watchlist';
+  static const String profile = '/profile';
   static const String trending = '/trending';
   static const String movieDetail = '/movieDetail';
 
@@ -24,14 +26,15 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const HomePage());
       case watchlist:
         return MaterialPageRoute(builder: (_) => const WatchlistPage());
+      case profile:
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
       case trending:
         return MaterialPageRoute(builder: (_) => const TrendingPage());
       case movieDetail:
-  final movieId = settings.arguments as int;
-  return MaterialPageRoute(
-    builder: (_) => MovieDetailPage(movieId: movieId),
-  );
-
+        final movieId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => MovieDetailPage(movieId: movieId),
+        );
 
       default:
         return MaterialPageRoute(

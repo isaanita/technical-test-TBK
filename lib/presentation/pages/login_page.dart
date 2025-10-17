@@ -23,8 +23,8 @@ class _LoginPageState extends State<LoginPage> {
     if (email == 'user@example.com' && password == '123456') {
       // simpan token dummy ke SharedPreferences
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', Env.bearerToken);
-      await prefs.setString('apiKey', Env.apiKey);
+      await prefs.setString('auth_token', Env.bearerToken);
+      await prefs.setString('api_key', Env.apiKey);
       return true;
     } else {
       return false;

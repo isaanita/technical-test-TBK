@@ -17,7 +17,6 @@ class TopRatedMovieBloc extends Bloc<TopRatedMovieEvent, TopRatedMovieState> {
     TopRatedMovieInitialFetchEvent event,
     Emitter<TopRatedMovieState> emit,
   ) async {
-    emit(TopRatedMovieLoadingState());
     final topRatedRepository = TopRatedRepository(ApiService());
 
     List<TopRatedModels> topRatedModels =

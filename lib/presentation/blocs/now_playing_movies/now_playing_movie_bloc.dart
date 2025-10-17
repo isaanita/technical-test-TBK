@@ -18,7 +18,6 @@ class NowPlayingMovieBloc
     NowPlayingMovieInitialFetchEvent event,
     Emitter<NowPlayingMovieState> emit,
   ) async {
-    emit(NowPlayingMovieFetchingLoadingState());
     final nowPlayingRepository = NowPlayingRepository(ApiService());
 
     List<NowPlayingModel> nowPlayingModels =

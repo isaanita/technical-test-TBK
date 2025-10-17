@@ -22,7 +22,6 @@ class TrendingMovieBloc extends Bloc<TrendingMovieEvent, TrendingMovieState> {
     TrendingMovieInitialFetchEvent event,
     Emitter<TrendingMovieState> emit,
   ) async {
-    emit(TrendingMovieFetchingLoadingState());
 
     final trendingRepository = TrendingRepository(ApiService());
 
@@ -41,7 +40,6 @@ class TrendingMovieBloc extends Bloc<TrendingMovieEvent, TrendingMovieState> {
   FutureOr<void> trendingMovieCategoryInitialFetchEvent(
       TrendingMovieCategoryInitialFetchEvent event,
       Emitter<TrendingMovieState> emit) async {
-    emit(TrendingMovieFetchingLoadingState());
     final trendingRepository = TrendingRepository(ApiService());
 
     List<TrendingMoviesModel> trendingMoviesCategoryModels =
@@ -59,7 +57,6 @@ class TrendingMovieBloc extends Bloc<TrendingMovieEvent, TrendingMovieState> {
   FutureOr<void> trendingTVCategoryInitialFetchEvent(
       TrendingTVCategoryInitialFetchEvent event,
       Emitter<TrendingMovieState> emit) async {
-    emit(TrendingMovieFetchingLoadingState());
     final trendingRepository = TrendingRepository(ApiService());
 
     List<TrendingMoviesModel> trendingTVCategoryModels =

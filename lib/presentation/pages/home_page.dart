@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   } else {
-                    return const Text("No Data");
+                    return const SizedBox.shrink();
                   }
                 },
               ),
@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   } else {
-                    return const Text("No Data");
+                    return const SizedBox.shrink();
                   }
                 },
               ),
@@ -229,7 +229,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   } else {
-                    return const Text("No Data");
+                    return const SizedBox.shrink();
                   }
                 },
               ),

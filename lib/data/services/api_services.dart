@@ -7,8 +7,8 @@ class ApiService {
   final Dio _dio = Dio();
 
   // Keys untuk SharedPreferences
-  static const String _tokenKey = 'token';
-  static const String _apiKeyKey = 'apiKey';
+  static const String _tokenKey = 'auth_token';
+  static const String _apiKeyKey = 'api_key';
 
   /// Ambil token & apiKey dari SharedPreferences
   Future<Map<String, String?>> _getAuthData() async {
