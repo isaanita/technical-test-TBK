@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:technical_test_isaanita/config/env.dart';
 import '../routes/app_routes.dart';
 
 class LoginPage extends StatefulWidget {
@@ -19,10 +20,11 @@ class _LoginPageState extends State<LoginPage> {
   // Dummy login: email = test@test.com, password = 123456
   Future<bool> _login(String email, String password) async {
     await Future.delayed(const Duration(seconds: 1)); // simulasi loading
-    if (email == 'test@test.com' && password == '123456') {
+    if (email == 'user@example.com' && password == '123456') {
       // simpan token dummy ke SharedPreferences
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', 'dummy_token_123');
+      await prefs.setString('token', Env.bearerToken);
+      await prefs.setString('apiKey', Env.apiKey);
       return true;
     } else {
       return false;
