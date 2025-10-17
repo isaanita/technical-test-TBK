@@ -6,11 +6,11 @@ class ApiService {
   final String baseUrl = Env.baseUrl;
   final Dio _dio = Dio();
 
-  // Keys untuk SharedPreferences
+  // SharedPreferences
   static const String _tokenKey = 'auth_token';
   static const String _apiKeyKey = 'api_key';
 
-  /// Ambil token & apiKey dari SharedPreferences
+  // token & apiKey dari SharedPreferences
   Future<Map<String, String?>> _getAuthData() async {
     final prefs = await SharedPreferences.getInstance();
     return {
@@ -19,7 +19,7 @@ class ApiService {
     };
   }
 
-  /// Ambil header authorization
+  // header authorization
   Future<Map<String, String>> _getHeaders() async {
     final authData = await _getAuthData();
     final token = authData['token'] ?? '';
@@ -28,7 +28,6 @@ class ApiService {
     };
   }
 
-  /// Contoh: fetch trending movies
   Future<Map<String, dynamic>> fetchTrendingMovies() async {
     final authData = await _getAuthData();
     final apiKey = authData['apiKey'] ?? '';
@@ -45,7 +44,6 @@ class ApiService {
     }
   }
 
-  /// Fetch trending movies category
   Future<Map<String, dynamic>> fetchTrendingMoviesCategory() async {
     final authData = await _getAuthData();
     final apiKey = authData['apiKey'] ?? '';
@@ -62,7 +60,6 @@ class ApiService {
     }
   }
 
-  /// Fetch trending TV category
   Future<Map<String, dynamic>> fetchTrendingTVCategory() async {
     final authData = await _getAuthData();
     final apiKey = authData['apiKey'] ?? '';
@@ -79,7 +76,6 @@ class ApiService {
     }
   }
 
-  /// Fetch now playing movies
   Future<Map<String, dynamic>> fetchNowPlaying() async {
     final authData = await _getAuthData();
     final apiKey = authData['apiKey'] ?? '';
@@ -96,7 +92,6 @@ class ApiService {
     }
   }
 
-  /// Fetch top rated movies
   Future<Map<String, dynamic>> fetchTopRated() async {
     final authData = await _getAuthData();
     final apiKey = authData['apiKey'] ?? '';
@@ -113,7 +108,6 @@ class ApiService {
     }
   }
 
-  /// Fetch movie details
   Future<Map<String, dynamic>> fetchMovieDetails(int movieId) async {
     final authData = await _getAuthData();
     final apiKey = authData['apiKey'] ?? '';
@@ -130,7 +124,6 @@ class ApiService {
     }
   }
 
-  /// Fetch crew & cast
   Future<Map<String, dynamic>> fetchCrewCast(int movieId) async {
     final authData = await _getAuthData();
     final apiKey = authData['apiKey'] ?? '';
