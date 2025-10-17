@@ -15,7 +15,6 @@ class AuthService {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_tokenKey, Env.bearerToken);
       await prefs.setString(_apiKeyKey, Env.apiKey);
-      await prefs.setString(_emailKey, email);
       return true;
     } else {
       return false;
@@ -26,7 +25,7 @@ class AuthService {
   Future<bool> isLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(_tokenKey);
-    return token != null && token.isNotEmpty; // selalu return bool
+    return token != null && token.isNotEmpty;
   }
 
   /// Logout

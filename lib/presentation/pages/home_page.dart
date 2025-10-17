@@ -13,6 +13,7 @@ import 'package:technical_test_isaanita/presentation/widget/genre_badges.dart';
 import 'package:technical_test_isaanita/presentation/widget/now_playing_carousel_widget.dart';
 import 'package:technical_test_isaanita/presentation/widget/section_title_home_page.dart';
 import 'package:technical_test_isaanita/presentation/widget/trending_movies_carousel_widget.dart';
+import 'package:technical_test_isaanita/utils/debug_utils.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -34,6 +35,11 @@ class _HomePageState extends State<HomePage> {
     repo = TrendingRepository(apiService);
     nowPlayingRepo = NowPlayingRepository(apiService);
     topRatedRepo = TopRatedRepository(apiService);
+    checkPrefs();
+  }
+
+  Future<void> checkPrefs() async {
+    await DebugUtils.printLocalStorage();
   }
 
   final List<String> genres = [
