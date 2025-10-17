@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:technical_test_isaanita/presentation/blocs/trending_movies/trending_movie_bloc.dart';
-import 'package:technical_test_isaanita/presentation/widget/category_segmented_control_widget.dart';
 import 'package:technical_test_isaanita/presentation/widget/floating_bottom_bar_widget.dart';
-import 'package:technical_test_isaanita/presentation/widget/trending_movies_carousel_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -37,8 +33,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(
+      body: const SingleChildScrollView(
+        padding: EdgeInsets.only(
             top: 10.0, left: 16.0, right: 16.0, bottom: 120.0),
         child: Column(
           children: [],
